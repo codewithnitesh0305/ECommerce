@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="(~{base::layout(~{::section})})">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+	<section>
+		<div class="container mt-3">
+			<div class="row">
+				<div class="col-md-6 offset-md-3">
+					<div class="card shadow-sm p-3 mb-5 bg-body-tertiary rounded">
+						<div class="card-header text-center">
+							<h2>Add Product</h2>
+						</div>
+						<div class="card-body">
+							<form>
+								<div class="mb-3">
+									<label>Title</label>
+									<input type="text" name="title" class="form-control">
+								</div>
+								<div class="mb-3">
+									<label>Description</label>
+									<textarea type="text" name="description" class="form-control"></textarea>
+								</div>
+								<div class="mb-3">
+									<label>Select Category</label>
+									<select class="form-control">
+										<option>--Select--</option>
+										<option>Electronic</option>
+										<option>Mobile</option>
+										<option>Clogthes</option>
+									</select>
+								</div>
+								<div class="mb-3">
+									<label>Price</label>
+									<input type="text" name="price" class="form-control">
+								</div>
+								<div class="row">
+									<div class="col md-3">
+										<label>Enter Stock</label>
+										<input type="text" name="stock" class="form-control">
+									</div>
+									<div class="col md-3">
+										<label>Upload Image</label>
+										<input type="file" name="image" class="form-control">
+									</div>
+								</div>
+								<button class="btn btn-primary mt-2 col-md-12">Add Product</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</body>
+</html>

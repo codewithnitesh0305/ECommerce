@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="(~{base::layout(~{::section})})">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+	<section>
+		<div class="container-fluid mt-5 mb-5">
+			<div class="row">
+				<div class="col-md-3">
+					<div class="card shadow-sm p-3 mb-5 bg-body-tertiary rounded">
+						<div class="card-header">
+							<h2>Add Category</h2>
+						</div>
+						<div class="card-body">
+							<form>
+								<div class="md-3">
+									<label>Enter Categroy</label>
+									<input type="text" class="form-control">
+								</div>
+								<div class="md-3">
+									<label>Upload Image</label>
+									<input type="file" class="form-control">
+								</div>
+								<button class="col-md-12 btn btn-primary mt-3">Add Category</button>
+							</form>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-8">
+					<div class="card shadow-sm p-3 mb-5 bg-body-tertiary rounded">
+						<div class="card-header fs-4">View Categroy</div>
+						<div class="card-body">
+							<table class="table table-hover">
+								<thead>
+									<tr>
+										<th scope="col">Id</th>
+										<th scope="col">Name</th>
+										<th scope="col">Images</th>
+										<th scope="col">Action</th>
+										
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<th scope="row">1</th>
+										<td>Mark</td>
+										<td>Otto</td>
+										<td>@mdo</td>
+									</tr>
+									
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</body>
+</html>
