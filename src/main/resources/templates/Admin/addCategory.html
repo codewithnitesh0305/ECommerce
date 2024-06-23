@@ -10,18 +10,41 @@
 			<div class="row">
 				<div class="col-md-3">
 					<div class="card shadow-sm p-3 mb-5 bg-body-tertiary rounded">
-						<div class="card-header">
+						<div class="card-header text-center">
 							<h2>Add Category</h2>
+								<th:block th:if="${session.successMsg}">
+									<p class="text-success fw-bold">[[${session.successMsg}]]</p>
+									<th:block th:text="${@commenServiceImp.removeSessionMessage()}"></th:block>
+								</th:block>
+								<th:block th:if="${session.errorMsg}">
+									<p class="text-danger fw-bold">[[${session.errorMsg}]]</p>
+									<th:block th:text="${@commenServiceImp.removeSessionMessage()}"></th:block>
+								</th:block>
 						</div>
 						<div class="card-body">
-							<form>
+							<form action="saveCategory" method="post" enctype="multipart/form-data">
 								<div class="md-3">
 									<label>Enter Categroy</label>
-									<input type="text" class="form-control">
+									<input type="text" class="form-control" name="name">
+								</div>
+								<div class="md-3">
+									<label>Status</label>
+									<div class="form-check">
+										<input class="form-check-input" type="radio" id="flexRadioDefault1" checked name="isactive" value="true">
+										<label class="form-check-label" for="flexRadioDefault1">
+											Active
+										</label>
+									</div>
+									<div class="form-check">
+										<input class="form-check-input" type="radio" id="flexRadioDefault2" name="isactive" value="false">
+										<label class="form-check-label" for="flexRadioDefault2">
+											Inactive
+										</label>
+									</div>
 								</div>
 								<div class="md-3">
 									<label>Upload Image</label>
-									<input type="file" class="form-control">
+									<input type="file" class="form-control" name="file">
 								</div>
 								<button class="col-md-12 btn btn-primary mt-3">Add Category</button>
 							</form>
