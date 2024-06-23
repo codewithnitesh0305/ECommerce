@@ -60,17 +60,24 @@
 									<tr>
 										<th scope="col">Id</th>
 										<th scope="col">Name</th>
+										<th scope="col">Status</th>
 										<th scope="col">Images</th>
 										<th scope="col">Action</th>
 										
 									</tr>
 								</thead>
 								<tbody>
-									<tr>
-										<th scope="row">1</th>
-										<td>Mark</td>
-										<td>Otto</td>
-										<td>@mdo</td>
+									<tr th:each="cat,c:${categroy}">
+										<th scope="row">[[${c.count}]]</th>
+										<td>[[${cat.name}]]</td>
+										<td>[[${cat.isactive}]]</td>
+										<td><img th:src="@{'/Images/Category/'+${cat.imageName}}" width="100px" height="80px"></td>
+										<td class="mt-5">
+											<a href="" class="btn btn-primary btn-sm"><i class="fa-solid fa-pen-to-square fa-1x"></i>Edit</a>
+											<a th:href="@{'/Admin/deleteCategory/'+${cat.id}}" class="btn btn-danger btn-sm"><i class="fa-solid fa-trash fx-1x"></i>Delete</a>										
+<!--												<a th:href="@{${cat.id}}" class="btn btn-danger btn-sm"><i class="fa-solid fa-trash fx-1x"></i>Delete</a>										
+-->
+										</td>
 									</tr>
 									
 								</tbody>

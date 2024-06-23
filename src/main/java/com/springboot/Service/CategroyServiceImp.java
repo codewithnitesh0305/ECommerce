@@ -1,9 +1,11 @@
 package com.springboot.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import com.springboot.Entity.Category;
 import com.springboot.Repository.CategoryRepository;
@@ -30,6 +32,17 @@ public class CategroyServiceImp implements CategoryService{
 	public boolean existCategory(String name) {
 		// TODO Auto-generated method stub
 		return categoryRepository.existsByName(name);
+	}
+
+	@Override
+	public boolean deleteCategroy(int id) {
+		// TODO Auto-generated method stub
+		Category category = categoryRepository.findById(id);
+		if(!category.equals(null)) {
+			categoryRepository.delete(category);
+			return true;
+		}	
+		return false;
 	}
 
 	

@@ -10,9 +10,11 @@ import java.nio.file.StandardCopyOption;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,7 +23,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.springboot.Entity.Category;
 import com.springboot.Service.CategoryService;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -42,7 +43,8 @@ public class AdminControllor {
 	}
 	
 	@GetMapping("/addCategory")
-	public String addCategroy() {
+	public String addCategroy(Model model) {
+		model.addAttribute("categroy", categoryService.getAllCategory());
 		return "Admin/addCategory";
 	}
 	
@@ -53,7 +55,7 @@ public class AdminControllor {
 	
 	//Save Product  Category in Database 
 	@PostMapping("/saveCategory")
-	public String saveCategroy(@ModelAttribute Category category,@RequestParam("file") MultipartFile file, HttpSession session) throws IOException {
+	public String saveCategroy(@ModelAttribute Category category,@RequestParam("file") MultipartFile file, HttpSession session, Model model) throws IOException {
 		
 		if(categoryService.existCategory(category.getName())) {
 			session.setAttribute("errorMsg", "Categroy is already exist...");
@@ -73,6 +75,18 @@ public class AdminControllor {
 				session.setAttribute("successMsg", "Category add successfully...");
 			}
 		}		
+		return "redirect:/Admin/addCategory";
+	}
+	
+	@GetMapping("/deleteCategory/{id}")
+	public String deleteCategory(@PathVariable int id,HttpSession session) {
+		Boolean deleteCategory = categoryService.deleteCategroy(id);
+		System.out.println(deleteCategory);
+		if(deleteCategory) {
+			session.setAttribute("successMsg", "Categroy delete successfully...");
+		}else {
+			session.setAttribute("errorMsag", "Something went wrong...");
+		}
 		return "redirect:/Admin/addCategory";
 	}
 }

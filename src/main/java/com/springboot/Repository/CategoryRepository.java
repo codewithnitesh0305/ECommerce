@@ -7,4 +7,5 @@ import com.springboot.Entity.Category;
 public interface CategoryRepository extends JpaRepository<Category, Integer>{
 
 	public boolean existsByName(String name);
+	public Category findById(int id);
 }

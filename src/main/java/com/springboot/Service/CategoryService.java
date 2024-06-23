@@ -9,5 +9,6 @@ public interface CategoryService {
 	public Category saveCategory(Category category);
 	public boolean existCategory(String name);
 	public List<Category> getAllCategory();
+	public boolean deleteCategroy(int id);
 	
 }
