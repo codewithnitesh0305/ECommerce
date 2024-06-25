@@ -5,8 +5,6 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
-
 import com.springboot.Entity.Category;
 import com.springboot.Repository.CategoryRepository;
 
@@ -43,6 +41,13 @@ public class CategroyServiceImp implements CategoryService{
 			return true;
 		}	
 		return false;
+	}
+
+	@Override
+	public Category getCategroyById(int id) {
+		// TODO Auto-generated method stub
+		Category category = categoryRepository.findById(id);
+		return category;
 	}
 
 	

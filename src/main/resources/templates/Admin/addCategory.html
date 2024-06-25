@@ -73,10 +73,8 @@
 										<td>[[${cat.isactive}]]</td>
 										<td><img th:src="@{'/Images/Category/'+${cat.imageName}}" width="100px" height="80px"></td>
 										<td class="mt-5">
-											<a href="" class="btn btn-primary btn-sm"><i class="fa-solid fa-pen-to-square fa-1x"></i>Edit</a>
+											<a th:href="@{'/Admin/editCategory/'+${cat.id}}" class="btn btn-primary btn-sm"><i class="fa-solid fa-pen-to-square fa-1x"></i>Edit</a>
 											<a th:href="@{'/Admin/deleteCategory/'+${cat.id}}" class="btn btn-danger btn-sm"><i class="fa-solid fa-trash fx-1x"></i>Delete</a>										
-<!--												<a th:href="@{${cat.id}}" class="btn btn-danger btn-sm"><i class="fa-solid fa-trash fx-1x"></i>Delete</a>										
--->
 										</td>
 									</tr>
 									

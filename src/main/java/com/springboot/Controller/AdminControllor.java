@@ -10,6 +10,7 @@ import java.nio.file.StandardCopyOption;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -53,6 +54,12 @@ public class AdminControllor {
 		return "Admin/viewProduct";
 	}
 	
+	@GetMapping("/editCategory/{id}")
+	public String editCategroy(@PathVariable int id , Model model) {
+		model.addAttribute("category", categoryService.getCategroyById(id));
+		return "Admin/editCategroy";
+	}
+	
 	//Save Product  Category in Database 
 	@PostMapping("/saveCategory")
 	public String saveCategroy(@ModelAttribute Category category,@RequestParam("file") MultipartFile file, HttpSession session, Model model) throws IOException {
@@ -88,5 +95,31 @@ public class AdminControllor {
 			session.setAttribute("errorMsag", "Something went wrong...");
 		}
 		return "redirect:/Admin/addCategory";
+	}
+	
+	@PostMapping("/updateCategroy")
+	public String updateCategory(@ModelAttribute Category category, @RequestParam("file") MultipartFile file, HttpSession session) throws IOException {
+		Category oldCategroy = categoryService.getCategroyById(category.getId());
+		//If user not update(file is null) the file than old file will take
+		String fileName = file.isEmpty() ? oldCategroy.getImageName():file.getOriginalFilename();
+		if(!ObjectUtils.isEmpty(oldCategroy)) {
+			oldCategroy.setName(category.getName());
+			oldCategroy.setImageName(fileName);
+			oldCategroy.setIsactive(category.isIsactive());			
+		}
+		 Category saveCategory = categoryService.saveCategory(oldCategroy);	 
+		 if(!ObjectUtils.isEmpty(saveCategory)) {
+			 if(!file.isEmpty()) {
+					//Save Images in the Images Folder
+						File saveFile = new ClassPathResource("static/Images").getFile();
+						Path path = Paths.get(saveFile.getAbsolutePath() + File.separator + "Category"+ File.separator + file.getOriginalFilename());
+						System.out.println(path);
+						Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+				 }
+			 session.setAttribute("successMsg", "Update Successfully...");
+		 }else {
+			 session.setAttribute("errorMsg", "Something went wrong...");
+		 }
+		return "redirect:/Admin/editCategory/"+category.getId();
 	}
 }
