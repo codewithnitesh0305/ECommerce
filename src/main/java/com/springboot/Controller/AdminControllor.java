@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -22,7 +23,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.springboot.Entity.Category;
+import com.springboot.Entity.Product;
 import com.springboot.Service.CategoryService;
+import com.springboot.Service.ProductService;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -32,6 +35,8 @@ public class AdminControllor {
 
 	@Autowired
 	private CategoryService categoryService;
+	@Autowired
+	private ProductService productService;
 	
 	@GetMapping("/")
 	public String index() {
@@ -39,7 +44,9 @@ public class AdminControllor {
 	}
 	
 	@GetMapping("/addProduct")
-	public String addProduct() {
+	public String addProduct(Model model) {
+		List<Category> listCategory = categoryService.getAllCategory();
+		model.addAttribute("category", listCategory);
 		return "Admin/addProduct";
 	}
 	
@@ -67,6 +74,7 @@ public class AdminControllor {
 		if(categoryService.existCategory(category.getName())) {
 			session.setAttribute("errorMsg", "Categroy is already exist...");
 		}else {
+			//If the User not add the file than the default.jpg(file name) is store in database
 			String imageName = file != null ? file.getOriginalFilename() : "default.jpg";
 			category.setImageName(imageName);
 			Category saveCategory = categoryService.saveCategory(category);
@@ -84,7 +92,7 @@ public class AdminControllor {
 		}		
 		return "redirect:/Admin/addCategory";
 	}
-	
+	//Delete Product Category in Database
 	@GetMapping("/deleteCategory/{id}")
 	public String deleteCategory(@PathVariable int id,HttpSession session) {
 		Boolean deleteCategory = categoryService.deleteCategroy(id);
@@ -97,6 +105,7 @@ public class AdminControllor {
 		return "redirect:/Admin/addCategory";
 	}
 	
+	//Update Product Category in Database 
 	@PostMapping("/updateCategroy")
 	public String updateCategory(@ModelAttribute Category category, @RequestParam("file") MultipartFile file, HttpSession session) throws IOException {
 		Category oldCategroy = categoryService.getCategroyById(category.getId());
@@ -121,5 +130,27 @@ public class AdminControllor {
 			 session.setAttribute("errorMsg", "Something went wrong...");
 		 }
 		return "redirect:/Admin/editCategory/"+category.getId();
+	}
+	
+	//Add Product to the Database
+	@PostMapping("/saveProduct")
+	public String addProdduct(@ModelAttribute Product product, @RequestParam("file") MultipartFile file, HttpSession session) throws IOException {
+		
+		String imageName = file != null ? file.getOriginalFilename() : "default.jpg";
+		product.setImageName(imageName);
+		
+		  Product saveProduct = productService.saveProduct(product);
+		  if(ObjectUtils.isEmpty(saveProduct)) { 
+			  session.setAttribute("errorMsg","Some field in empty..."); 
+		  }else { 
+			  //Save Images in the Images Folder File
+		  File saveFile = new ClassPathResource("static/Images").getFile();
+		  Path path = Paths.get(saveFile.getAbsolutePath() + File.separator + "Product"+File.separator + file.getOriginalFilename()); 
+		  System.out.println(path);
+		  Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+		  session.setAttribute("successMsg", "Product add successfully..."); 
+		  }
+		 
+		return "redirect:/Admin/addProduct";
 	}
 }

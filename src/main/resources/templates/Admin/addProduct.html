@@ -12,9 +12,17 @@
 					<div class="card shadow-sm p-3 mb-5 bg-body-tertiary rounded">
 						<div class="card-header text-center">
 							<h2>Add Product</h2>
+							<th:block th:if="${session.successMsg}">
+									<p class="text-success fw-bold">[[${session.successMsg}]]</p>
+									<th:block th:text="${@commenServiceImp.removeSessionMessage()}"></th:block>
+								</th:block>
+								<th:block th:if="${session.errorMsg}">
+									<p class="text-danger fw-bold">[[${session.errorMsg}]]</p>
+									<th:block th:text="${@commenServiceImp.removeSessionMessage()}"></th:block>
+								</th:block>
 						</div>
 						<div class="card-body">
-							<form>
+							<form action="saveProduct" enctype="multipart/form-data" method="post">
 								<div class="mb-3">
 									<label>Title</label>
 									<input type="text" name="title" class="form-control">
@@ -25,11 +33,11 @@
 								</div>
 								<div class="mb-3">
 									<label>Select Category</label>
-									<select class="form-control">
+									<select class="form-control" name="category">
 										<option>--Select--</option>
-										<option>Electronic</option>
-										<option>Mobile</option>
-										<option>Clogthes</option>
+										<!--Reterive category name dynamically from the database and show in frontend-->
+										<option th:each="c:${category}">[[${c.name}]]</option>
+										
 									</select>
 								</div>
 								<div class="mb-3">
@@ -43,7 +51,7 @@
 									</div>
 									<div class="col md-3">
 										<label>Upload Image</label>
-										<input type="file" name="image" class="form-control">
+										<input type="file" name="file" class="form-control">
 									</div>
 								</div>
 								<button class="btn btn-primary mt-2 col-md-12">Add Product</button>
