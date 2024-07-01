@@ -57,7 +57,8 @@ public class AdminControllor {
 	}
 	
 	@GetMapping("/viewProduct")
-	public String viewProduct() {
+	public String viewProduct(Model model) {
+		model.addAttribute("product", productService.getAllProduct());
 		return "Admin/viewProduct";
 	}
 	

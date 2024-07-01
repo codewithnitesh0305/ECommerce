@@ -21,7 +21,7 @@ public class ProductServiceImp implements ProductService{
 	}
 
 	@Override
-	public List<Product> getAllProduct(Product product) {
+	public List<Product> getAllProduct() {
 		// TODO Auto-generated method stub
 		return productRepositoy.findAll();
 	}

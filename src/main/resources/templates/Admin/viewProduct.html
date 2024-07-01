@@ -6,7 +6,41 @@
 </head>
 <body>
 	<section>
-		
+		<div class="card mt-2">
+			<div class="card-header">
+				<h2 class="text-center">View Product</h2>
+			</div>
+			<div class="card-body">
+				<table class="table table-striped">
+						<thead>
+							<tr>
+								<th scope="col">SNo.</th>
+								<th scope="col">Product</th>
+								<th scope="col">Title</th>
+								<th scope="col">Category</th>
+								<th scope="col">Price</th>
+								<th scope="col">Stock</th>
+								<th scope="col" class="text-center">Action</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="products,prod:${product}">
+								<th scope="row">[[${prod.count}]]</th>
+								<td><img th:src="@{'/Images/Product/'+${products.imageName}}" width="100px" height="80px"></td>
+								<td>[[${products.title}]]</td>
+								<td>[[${products.category}]]</td>
+								<td>[[${products.price}]]</td>
+								<td>[[${products.stock}]]</td>
+								<td class="text-center">
+									<a th:href="@{'/Admin/editProduct/'+${products.id}}" class="btn btn-primary btn-sm"><i class="fa-solid fa-pen-to-square fa-1x"></i>Edit</a>
+									<a th:href="@{'/Admin/deleteProduct/'+${products.id}}" class="btn btn-danger btn-sm"><i class="fa-solid fa-trash fx-1x"></i>Delete</a>
+								</td>
+							</tr>
+							
+						</tbody>
+						</table>
+			</div>
+		</div>
 	</section>
 </body>
 </html>
