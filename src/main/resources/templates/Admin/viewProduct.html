@@ -9,6 +9,14 @@
 		<div class="card mt-2">
 			<div class="card-header">
 				<h2 class="text-center">View Product</h2>
+				<th:block th:if="${session.successMsg}">
+					<p class="text-success fw-bold text-center">[[${session.successMsg}]]</p>
+					<th:block th:text="${@commenServiceImp.removeSessionMessage()}"></th:block>
+				</th:block>
+				<th:block th:if="${session.errorMsg}">
+					<p class="text-danger fw-bold text-center">[[${session.errorMsg}]]</p>
+					<th:block th:text="${@commenServiceImp.removeSessionMessage()}"></th:block>
+				</th:block>
 			</div>
 			<div class="card-body">
 				<table class="table table-striped">

@@ -62,6 +62,13 @@ public class AdminControllor {
 		return "Admin/viewProduct";
 	}
 	
+	@GetMapping("/editProduct/{id}")
+	public String editProduct(@PathVariable("id") int id, Model model) {
+		model.addAttribute("product", productService.getProductById(id));
+		model.addAttribute("categories", categoryService.getAllCategory());
+		return "Admin/editProduct";
+	}
+	
 	@GetMapping("/editCategory/{id}")
 	public String editCategroy(@PathVariable int id , Model model) {
 		model.addAttribute("category", categoryService.getCategroyById(id));
@@ -135,8 +142,7 @@ public class AdminControllor {
 	
 	//Add Product to the Database
 	@PostMapping("/saveProduct")
-	public String addProdduct(@ModelAttribute Product product, @RequestParam("file") MultipartFile file, HttpSession session) throws IOException {
-		
+	public String addProdduct(@ModelAttribute Product product, @RequestParam("file") MultipartFile file, HttpSession session) throws IOException {		
 		String imageName = file != null ? file.getOriginalFilename() : "default.jpg";
 		product.setImageName(imageName);
 		
@@ -153,5 +159,40 @@ public class AdminControllor {
 		  }
 		 
 		return "redirect:/Admin/addProduct";
+	}
+	
+	@GetMapping("/deleteProduct/{id}")
+	public String deleteProduct(@PathVariable("id") int id, HttpSession session) {
+		boolean deleteProduct = productService.deleteProductById(id);
+		if(deleteProduct) {
+			session.setAttribute("successMsg", "Product Delete Successfully...");
+		}else {
+			session.setAttribute("errorMsg", "Something went wrong...");
+		}
+		return "redirect:/Admin/viewProduct";
+	}
+	
+	@PostMapping("/updateProdcut")
+	public String updateProduct(@ModelAttribute Product product, @RequestParam("file") MultipartFile file, HttpSession session) throws IOException {
+		Product oldProduct = productService.getProductById(product.getId());
+		String imageName = file.isEmpty() ? oldProduct.getImageName() : file.getOriginalFilename();
+		oldProduct.setTitle(product.getTitle());
+		oldProduct.setDescription(product.getDescription());
+		oldProduct.setCategory(product.getCategory());
+		oldProduct.setPrice(product.getPrice());
+		oldProduct.setStock(product.getStock());
+		oldProduct.setImageName(imageName);
+		Product updateProduct = productService.updateProduct(oldProduct);
+		if(!ObjectUtils.isEmpty(updateProduct)) {			
+			if(!file.isEmpty()) {
+				File saveFile = new ClassPathResource("static/Images").getFile();
+				Path path = Paths.get(saveFile.getAbsolutePath() + File.separator + "Product" + File.separator + file.getOriginalFilename());
+				Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);				
+			}
+			session.setAttribute("successMsg", "Product update successfully...");
+		}else {
+			session.setAttribute("errorMsg", "Something went wrong");
+		}
+		return "redirect:/Admin/editProduct/"+product.getId();
 	}
 }
