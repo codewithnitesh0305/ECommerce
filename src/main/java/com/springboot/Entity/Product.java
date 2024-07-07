@@ -29,4 +29,5 @@ public class Product {
 	private int discount;
 	private Double discountPrice;
 	private String imageName;
+	private boolean isActive;
 }

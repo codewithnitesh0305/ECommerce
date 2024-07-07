@@ -50,5 +50,12 @@ public class CategroyServiceImp implements CategoryService{
 		return category;
 	}
 
+	@Override
+	public List<Category> getAllActiveCategory() {
+		// TODO Auto-generated method stub
+		List<Category> category = categoryRepository.findByIsactiveTrue();
+		return category;
+	}
+
 	
 }

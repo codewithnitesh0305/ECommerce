@@ -34,56 +34,11 @@
 	<div class="container">
 		<div class="row">
 			<p class="text-center fs-4">Category</p>
-			<div class="col-md-2">
+			<div th:each="categories:${category}" class="col-md-2">
 				<div class="card rounded-circle mt-2 shadow p-3 mb-5 bg-body rounded">
 					<div class="card-body text-center ">
-						<img src="Images/Category/book.webp" width="75%" height="150px" style="background-size: cover; background-position: center;">
-						<p>Books</p>
-					</div>
-				</div>
-			</div>
-			
-			<div class="col-md-2">
-				<div class="card rounded-circle mt-2 shadow p-3 mb-5 bg-body rounded">
-					<div class="card-body text-center ">
-						<img src="Images/Category/electronic.png" width="75%" height="150px" style="background-size: cover; background-position: center;">
-						<p>Electronic</p>
-					</div>
-				</div>
-			</div>
-			
-			<div class="col-md-2">
-				<div class="card rounded-circle mt-2 shadow p-3 mb-5 bg-body rounded">
-					<div class="card-body text-center ">
-						<img src="Images/Category/fachion.jpg" width="75%" height="150px" style="background-size: cover; background-position: center;">
-						<p>Faichons</p>
-					</div>
-				</div>
-			</div>
-			
-			<div class="col-md-2">
-				<div class="card rounded-circle mt-2 shadow p-3 mb-5 bg-body rounded">
-					<div class="card-body text-center ">
-						<img src="Images/Category/Buity.jpg" width="75%" height="150px" style="background-size: cover; background-position: center;">
-						<p>Buity</p>
-					</div>
-				</div>
-			</div>
-			
-			<div class="col-md-2">
-				<div class="card rounded-circle mt-2 shadow p-3 mb-5 bg-body rounded">
-					<div class="card-body text-center ">
-						<img src="Images/Category/laptop.jpg" width="75%" height="150px" style="background-size: cover; background-position: center;">
-						<p>Laptop</p>
-					</div>
-				</div>
-			</div>
-			
-			<div class="col-md-2">
-				<div class="card rounded-circle mt-2 shadow p-3 mb-5 bg-body rounded">
-					<div class="card-body text-center ">
-						<img src="Images/Category/phone.avif" width="75%" height="150px" style="background-size: cover; background-position: center;">
-						<p>Mobile</p>
+						<img th:src="@{'/Images/Category/'+ ${categories.imageName}}" width="75%" height="150px" style="background-size: cover; background-position: center;">
+						<p>[[${categories.name}]]</p>
 					</div>
 				</div>
 			</div>
@@ -96,38 +51,11 @@
 	<div class="container-fluid bg-light p-3">
 		<div class="row">
 			<p class="text-center fs-4">Latest Product</p>
-			<div class="col-md-3">
+			<div th:each="products:${product}" class="col-md-3">
 				<div class="card shadow-sm p-3 mb-5 bg-body-tertiary rounded">
 					<div class="card-body text-center">
-						<img src="Images/Product/laptop.webp" width="65%" height="140px">
-						<p>I Phone 14</p>
-					</div>
-				</div>
-			</div>
-			
-			<div class="col-md-3">
-				<div class="card shadow-sm p-3 mb-5 bg-body-tertiary rounded">
-					<div class="card-body text-center">
-						<img src="Images/Product/laptop.webp" width="65%" height="140px">
-						<p>I Phone 14</p>
-					</div>
-				</div>
-			</div>
-			
-			<div class="col-md-3">
-				<div class="card shadow-sm p-3 mb-5 bg-body-tertiary rounded">
-					<div class="card-body text-center">
-						<img src="Images/Product/laptop.webp" width="65%" height="140px">
-						<p>I Phone 14</p>
-					</div>
-				</div>
-			</div>
-			
-			<div class="col-md-3 ">
-				<div class="card shadow-sm p-3 mb-5 bg-body-tertiary rounded">
-					<div class="card-body text-center">
-						<img src="Images/Product/laptop.webp" width="65%" height="140px">
-						<p>I Phone 14</p>
+						<img th:src="@{'Images/Product/'+ ${products.imageName}}" width="65%" height="140px">
+						<p>[[${products.title}]]</p>
 					</div>
 				</div>
 			</div>
