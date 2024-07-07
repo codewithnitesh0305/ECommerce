@@ -10,24 +10,25 @@
 			<div class="col-md-12 p-5">
 				<div class="row">
 					<div class="col-md-6 text-center mt-5">
-						<img src="/Images/Product/laptop.webp" width="350px" height="250px">
+						<img th:src="@{'/Images/Product/' + ${productDetails.imageName}}" width="350px" height="250px">
 					</div>
 					<div class="col-md-6">
-						<p class="fs-3">Laptop</p>
+						<p class="fs-3">[[${productDetails.title}]]</p>
 						<p>
-							<span class="fw-bold">Description:- </span> HP Laptop i5
+							<span class="fw-bold">Description:- </span> [[${productDetails.description}]]
 						</p>
 						<p>
 							<span class="fw-bold">Product Details:- </span><br>
-							Status: <span class="badge bg-success">Available</span>
-									<span class="badge bg-warning">Out of stock</span><br>
-							Cataegory: Laptop<br>
+							Status: <span class="badge bg-success" th:if="${productDetails.stock >  5}" >Available</span>
+									<span class="badge bg-warning" th:if="${productDetails.stock ==  0}">Out of stock</span><br>
+									<span class="badge" style="background-color: #fd7e14;" th:if="${productDetails.stock ==  5}">Limited stock</span><br>
+							Cataegory: [[${productDetails.category}]]<br>
 							Policy : 7 Day Replacement & Return
 						</p>
 						<p class="fs-5 fw-bold">
-							Price: 10000Rs
-							<span class="fs-6 text-decoration-line-through text-secoundary">50000</span>
-							<span class="fs-6 text-success">50%</span>
+							Price: [[${productDetails.discountPrice}]]
+							<span class="fs-6 text-decoration-line-through text-secoundary" th:if="${productDetails.price > productDetails.discountPrice}">[[${productDetails.price}]]</span>
+							<span class="fs-6 text-success" th:if="${productDetails.discount > 0}">[[${productDetails.discount}]]%</span>
 						</p>
 						<div class="row">
 							<div class="col-md-4 text-success text-center p-2">

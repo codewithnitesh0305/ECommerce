@@ -44,7 +44,8 @@
 								<td>[[${products.discount}]]%</td>
 								<td>[[${products.discountPrice}]]</td>
 								<td>[[${products.stock}]]</td>
-								<td>[[${products.isActive}]]</td>
+								<td class="fw-bold" th:if="${products.isactive == true}" th:style="'color: green;'">Active</td>
+								<td class="fw-bold" th:if="${products.isactive == false}" th:style="'color: red;'">Inactive</td>
 								<td class="text-center">
 									<a th:href="@{'/Admin/editProduct/'+${products.id}}" class="btn btn-primary btn-sm"><i class="fa-solid fa-pen-to-square fa-1x"></i>Edit</a>
 									<a th:href="@{'/Admin/deleteProduct/'+${products.id}}" class="btn btn-danger btn-sm"><i class="fa-solid fa-trash fx-1x"></i>Delete</a>

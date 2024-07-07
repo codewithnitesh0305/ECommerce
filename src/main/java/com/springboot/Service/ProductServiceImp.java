@@ -49,4 +49,11 @@ public class ProductServiceImp implements ProductService{
 		return productRepositoy.save(product);
 	}
 
+	@Override
+	public List<Product> getAllActiveProduct() {
+		// TODO Auto-generated method stub
+		List<Product> allActiveProduct = productRepositoy.findByIsactiveTrue();
+		return allActiveProduct;
+	}
+
 }

@@ -47,9 +47,9 @@
 											<div class="row text-center">
 												<p class="fs-6 fw-bold">
 													<i class="fa-solid fa-indian-rupee-sign"></i>[[${p.discountPrice}]]
-													<span class="fs-6 text-success">[[${p.discount}]]% Off</span>
+													<span class="fs-6 text-success" th:if="${p.discount > 0}">[[${p.discount}]]% Off</span>
 												</p>
-												<a href="/viewDetails" class="btn btn-primary col-md-6 offset-md-3">View Details</a>
+												<a th:href="@{'/viewDetails/' + ${p.id}}" class="btn btn-primary col-md-6 offset-md-3">View Details</a>
 												
 											</div>
 										</div>

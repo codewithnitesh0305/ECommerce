@@ -146,6 +146,7 @@ public class AdminControllor {
 		String imageName = file != null ? file.getOriginalFilename() : "default.jpg";
 		product.setImageName(imageName);
 		product.setDiscount(0);
+		System.out.println(product.isIsactive());
 		product.setDiscountPrice(product.getPrice());
 		  Product saveProduct = productService.saveProduct(product);
 		  if(ObjectUtils.isEmpty(saveProduct)) { 
@@ -186,7 +187,7 @@ public class AdminControllor {
 			oldProduct.setPrice(product.getPrice());
 			oldProduct.setStock(product.getStock());
 			oldProduct.setImageName(imageName);
-			oldProduct.setActive(product.isActive());
+			oldProduct.setIsactive(product.isIsactive());
 			oldProduct.setDiscount(product.getDiscount());
 			Double discount = product.getPrice()*(product.getDiscount()/100.0);
 			Double discountPrice = product.getPrice() - discount;
