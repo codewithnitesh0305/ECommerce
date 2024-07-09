@@ -11,7 +11,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -155,7 +154,6 @@ public class AdminControllor {
 			  //Save Images in the Images Folder File
 		  File saveFile = new ClassPathResource("static/Images").getFile();
 		  Path path = Paths.get(saveFile.getAbsolutePath() + File.separator + "Product"+File.separator + file.getOriginalFilename()); 
-		  System.out.println(path);
 		  Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
 		  session.setAttribute("successMsg", "Product add successfully..."); 
 		  }

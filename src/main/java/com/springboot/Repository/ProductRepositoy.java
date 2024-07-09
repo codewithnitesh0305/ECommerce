@@ -10,4 +10,5 @@ public interface ProductRepositoy extends JpaRepository<Product, Integer>{
 
 	public Product findById(int id);
 	public List<Product> findByIsactiveTrue();
+	public List<Product> findByCategory(String Category);
 }

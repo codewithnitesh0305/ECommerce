@@ -21,13 +21,17 @@
 		<div class="container-fluid mb-1">
 			<div class="row">
 				<div class="col-md-2 p-0">
-					<div class="card shadow p-0 mb-5 bg-body rounded">
+					<div class="card shadow p-0 mb-5 bg-body rounded">						
 						<div class="card-body ">
+							<p class="fs-4 text-center">Categories</p>
 							<div class="list-group">
-								<a href="#" class="list-group-item list-group-item-action active" aria-current="true">
-									Categories
+								<a href="/product" class="list-group-item list-group-item-action " aria-current="true" th:classappend="${paramValue == ''} ? 'active' : ''">
+									All
 								</a>
-								<a th:each="c:${category}"href="#" class="list-group-item list-group-item-action">[[${c.name}]]</a>
+								<a th:each="c:${category}" 
+								th:href="@{'/product?category=' + ${c.name}}" 
+								th:classappend="${paramValue == c.name} ? 'active' : ''"
+								class="list-group-item list-group-item-action">[[${c.name}]]</a>
 								
 							
 							</div>
@@ -46,7 +50,10 @@
 											<p class="fs-5 text-center">[[${p.title}]]</p>
 											<div class="row text-center">
 												<p class="fs-6 fw-bold">
-													<i class="fa-solid fa-indian-rupee-sign"></i>[[${p.discountPrice}]]
+													<i class="fa-solid fa-indian-rupee-sign"></i>
+													<span th:if="${p.price > p.discountPrice}">[[${p.discountPrice}]]</span>
+													<span th:Classappend="${p.price == p.discountPrice} ? '': 'text-decoration-line-through'" >[[${p.price}]]</span>
+													
 													<span class="fs-6 text-success" th:if="${p.discount > 0}">[[${p.discount}]]% Off</span>
 												</p>
 												<a th:href="@{'/viewDetails/' + ${p.id}}" class="btn btn-primary col-md-6 offset-md-3">View Details</a>

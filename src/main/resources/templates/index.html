@@ -51,14 +51,15 @@
 	<div class="container-fluid bg-light p-3">
 		<div class="row">
 			<p class="text-center fs-4">Latest Product</p>
-			<div th:each="products:${product}" class="col-md-3">
-				<div class="card shadow-sm p-3 mb-5 bg-body-tertiary rounded">
-					<div class="card-body text-center">
-						<img th:src="@{'Images/Product/'+ ${products.imageName}}" width="65%" height="140px">
-						<p>[[${products.title}]]</p>
+			
+				<a th:each="products:${product}" th:href="@{'viewDetails/' +${products.id}}" class="col-md-3 text-decoration-none" style="color: black;">
+					<div class="card shadow-sm p-3 mb-5 bg-body-tertiary rounded">
+						<div class="card-body text-center">
+							<img th:src="@{'Images/Product/'+ ${products.imageName}}" width="65%" height="140px">
+							<p>[[${products.title}]]</p>
+						</div>
 					</div>
-				</div>
-			</div>
+				</a>
 			
 		</div>
 	</div>

@@ -4,8 +4,10 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import com.springboot.Entity.Product;
+import com.springboot.Repository.CategoryRepository;
 import com.springboot.Repository.ProductRepositoy;
 
 @Service
@@ -13,6 +15,9 @@ public class ProductServiceImp implements ProductService{
 
 	@Autowired
 	private ProductRepositoy productRepositoy;
+	
+	@Autowired
+	private CategoryRepository categoryRepository;
 	
 	@Override
 	public Product saveProduct(Product product) {
@@ -50,10 +55,16 @@ public class ProductServiceImp implements ProductService{
 	}
 
 	@Override
-	public List<Product> getAllActiveProduct() {
+	public List<Product> getAllActiveProduct(String category) {
 		// TODO Auto-generated method stub
-		List<Product> allActiveProduct = productRepositoy.findByIsactiveTrue();
+		List<Product> allActiveProduct = null;
+		if(ObjectUtils.isEmpty(category)) {
+			allActiveProduct = productRepositoy.findByIsactiveTrue();
+		}else {
+			allActiveProduct = productRepositoy.findByCategory(category);
+		}
 		return allActiveProduct;
 	}
+
 
 }
