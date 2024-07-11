@@ -30,4 +30,5 @@ public class User {
 	private String pincode;
 	private String password;
 	private String profileImage;
+	private String role;
 }

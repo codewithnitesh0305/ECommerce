@@ -6,4 +6,5 @@ import com.springboot.Entity.User;
 
 public interface UserRepository extends JpaRepository<User, Integer>{
 
+	public User findByEmail(String email);
 }
