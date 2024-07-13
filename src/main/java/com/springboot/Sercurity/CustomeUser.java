@@ -36,4 +36,11 @@ public class CustomeUser implements UserDetails {
 		return user.getEmail();
 	}
 
+	@Override
+	public boolean isEnabled() {
+		// TODO Auto-generated method stub
+		return user.isEnable();
+	}
+
+	
 }

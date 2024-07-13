@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +24,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.springboot.Entity.Category;
 import com.springboot.Entity.Product;
+import com.springboot.Entity.User;
 import com.springboot.Service.CategoryService;
 import com.springboot.Service.ProductService;
+import com.springboot.Service.UserServiceImp;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -35,11 +38,24 @@ public class AdminControllor {
 	@Autowired
 	private CategoryService categoryService;
 	@Autowired
-	private ProductService productService;
+	private ProductService productService;	
+	@Autowired
+	private UserServiceImp userServiceImp;
 	
 	@GetMapping("/")
 	public String index() {
 		return "Admin/index";
+	}
+	
+	@ModelAttribute
+	public void getUserDetails(Principal principal , Model model) {
+		if(principal != null) {
+			String email = principal.getName();
+			User user = userServiceImp.getUserByEmail(email);
+			model.addAttribute("user", user);
+		}		
+	    List<Category> category = categoryService.getAllActiveCategory();
+		model.addAttribute("categories", category);
 	}
 	
 	@GetMapping("/addProduct")
@@ -74,6 +90,11 @@ public class AdminControllor {
 		return "Admin/editCategroy";
 	}
 	
+	@GetMapping("/viewUsers")
+	public String viewUsers(Model model) {
+		model.addAttribute("users", userServiceImp.getAllUsersByRole("ROLE_USER"));
+		return "Admin/viewUsers";
+	}
 	//Save Product  Category in Database 
 	@PostMapping("/saveCategory")
 	public String saveCategroy(@ModelAttribute Category category,@RequestParam("file") MultipartFile file, HttpSession session, Model model) throws IOException {
@@ -161,6 +182,7 @@ public class AdminControllor {
 		return "redirect:/Admin/addProduct";
 	}
 	
+	//Delete Product by id from database
 	@GetMapping("/deleteProduct/{id}")
 	public String deleteProduct(@PathVariable("id") int id, HttpSession session) {
 		boolean deleteProduct = productService.deleteProductById(id);
@@ -172,6 +194,7 @@ public class AdminControllor {
 		return "redirect:/Admin/viewProduct";
 	}
 	
+	//Update Product from database
 	@PostMapping("/updateProdcut")
 	public String updateProduct(@ModelAttribute Product product, @RequestParam("file") MultipartFile file, HttpSession session) throws IOException {
 		if(product.getDiscount()  <0 || product.getDiscount() > 100) {
@@ -204,4 +227,16 @@ public class AdminControllor {
 		}		
 		return "redirect:/Admin/editProduct/"+product.getId();
 	}
+	
+	@GetMapping("/updateStatus")
+	public String updateUserStatus(@RequestParam("status") Boolean status, @RequestParam("id") Integer id, HttpSession session) {
+		boolean update = userServiceImp.updateUserStatus(id, status);
+		if(update) {
+			session.setAttribute("successMsg", "User status update successfully...");
+		}else {
+			session.setAttribute("errorMsg", "Something went worg...");
+		}
+		return "redirect:/Admin/viewUsers";
+	}
+	
 }

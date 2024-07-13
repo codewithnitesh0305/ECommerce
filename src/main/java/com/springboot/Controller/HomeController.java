@@ -6,6 +6,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.security.Principal;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -19,12 +21,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.springboot.Entity.Category;
 import com.springboot.Entity.User;
 import com.springboot.Service.CategroyServiceImp;
 import com.springboot.Service.ProductServiceImp;
 import com.springboot.Service.UserServiceImp;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.transaction.Transactional;
 
 
 
@@ -40,9 +44,11 @@ public class HomeController {
 	@Autowired
 	private UserServiceImp userServiceImp;
 	@GetMapping("/")
-	public String index(Model model) {
+	public String index(@RequestParam(value="category", defaultValue = "") String category, Model model) {
 		model.addAttribute("category", categroyServiceImp.getAllActiveCategory());
 		model.addAttribute("product",productServiceImp.getAllProduct());
+		model.addAttribute("product",productServiceImp.getAllActiveProduct(category));
+		model.addAttribute("paramValue", category);
 		return "index";
 	}
 	
@@ -54,6 +60,17 @@ public class HomeController {
 	@GetMapping("/login")
 	public String login() {
 		return "login";
+	}
+	
+	@ModelAttribute
+	public void getUserDetails(Principal principal , Model model) {
+		if(principal != null) {
+			String email = principal.getName();
+			User user = userServiceImp.getUserByEmail(email);
+			model.addAttribute("user", user);
+		}		
+	    List<Category> category = categroyServiceImp.getAllActiveCategory();
+		model.addAttribute("categories", category);
 	}
 	
 	@GetMapping("/product")
@@ -70,6 +87,7 @@ public class HomeController {
 		return "viewDetails";
 	}
 	
+	@Transactional
 	@PostMapping("/saveUser")
 	public String saveUser(@ModelAttribute User user,@RequestParam("file")MultipartFile file,  HttpSession session) throws IOException {
 		String fileName = file.isEmpty() ? "default.jpg" : file.getOriginalFilename();
@@ -79,7 +97,7 @@ public class HomeController {
 			session.setAttribute("errorMsg", "Some field are empty");
 		}else {
 			File saveFile = new ClassPathResource("static/Images").getFile();
-			Path path = Paths.get(saveFile.getAbsolutePath() + File.separator + "Product"+File.separator + file.getOriginalFilename()); 
+			Path path = Paths.get(saveFile.getAbsolutePath() + File.separator +"Product"+File.separator + file.getOriginalFilename()); 
 			Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
 			session.setAttribute("successMsg", "Register successfully...");
 		}

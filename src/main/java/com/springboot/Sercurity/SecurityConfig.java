@@ -40,12 +40,14 @@ public class SecurityConfig {
 		http.authorizeHttpRequests(auth -> {
 			try {
 				auth.requestMatchers("/Admin/**").hasRole("ADMIN")
+						.requestMatchers("/User/**").hasRole("USER")
 						.requestMatchers("/**").permitAll()
 						.and()
 						.formLogin(form -> form.loginPage("/login")
 								.loginProcessingUrl("/userLogin")
 								.successHandler(successHandler)
 								.permitAll()
+						
 								);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block

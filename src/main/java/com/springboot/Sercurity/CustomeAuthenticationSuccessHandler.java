@@ -21,7 +21,7 @@ public class CustomeAuthenticationSuccessHandler implements AuthenticationSucces
 		// TODO Auto-generated method stub
 		Set<String> role =  AuthorityUtils.authorityListToSet(authentication.getAuthorities());
 		if(role.contains("ROLE_USER")) {
-			response.sendRedirect("/");
+			response.sendRedirect("User/");
 		}else {
 			response.sendRedirect("Admin/");
 		}

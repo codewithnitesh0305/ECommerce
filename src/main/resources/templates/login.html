@@ -14,7 +14,15 @@
 				<div class="col-md-6 p-5 mt-2">
 					<div class="card shadow p-3 mb-5 bg-body-tertiary rounded">
 						<div class="card-header">
-							<p class="text-center fs-6">Login</p>
+							<p class="text-center fs-4">Login</p>
+							<th:block th:if="${param.error}">
+								<p class="text-success fw-bold text-center">Invalid email and password</p>
+								<th:block th:text="${@commenServiceImp.removeSessionMessage()}"></th:block>
+							</th:block>
+							<th:block th:if="${param.logout}">
+								<p class="text-success fw-bold text-center">Logout Successfully</p>
+								<th:block th:text="${@commenServiceImp.removeSessionMessage()}"></th:block>
+							</th:block>
 						</div>
 						<div class="card-body"> 
 							<form action="userLogin" method="post">

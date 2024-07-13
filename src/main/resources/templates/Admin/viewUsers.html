@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="(~{base:: layout(~{::section})})">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+	<section>
+		<div class="card">
+			<div class="card-header">
+				<h2 class="text-center">User Details</h2>
+				<th:block th:if="${session.successMsg}">
+					<p class="text-success fw-bold">[[${session.successMsg}]]</p>
+					<th:block th:text="${@commenServiceImp.removeSessionMessage()}"></th:block>
+				</th:block>
+				<th:block th:if="${session.errorMsg}">
+					<p class="text-danger fw-bold">[[${session.errorMsg}]]</p>
+					<th:block th:text="${@commenServiceImp.removeSessionMessage()}"></th:block>
+				</th:block>
+			</div>
+			<div class="card-body">
+				<table class="table table-hover">
+					<thead>
+						<tr class="text-center">
+							<th scope="col">Id</th>
+							<th scope="col">Name</th>
+							<th scope="col">Email</th>
+							<th scope="col">Phone No.</th>
+							<th scope="col">City</th>
+							<th scope="col">Status</th>
+							<th scope="col">Action</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="user:${users}" class="text-center">
+							<th scope="row">[[${user.id}]]</th>
+							<td>[[${user.name}]]</td>
+							<td>[[${user.email}]]</td>
+							<td>[[${user.mobileNumber}]]</td>
+							<td>[[${user.city}]]</td>
+							<td class="fw-bold" th:if="${user.isEnable == true}" th:style="'color: green;'">Active</td>
+								<td class="fw-bold" th:if="${user.isEnable == false}" th:style="'color: red;'">Inactive</td>
+							<td>
+								<a th:href="@{'/Admin/updateStatus?status = true$id='+${user.id}}" class="btn btn-primary btn-sm"><i class="fa-solid fa-pen-to-square fa-1x"></i>Active</a>
+								<a th:href="@{'/Admin/updateStatus?status = false$id='+${user.id}}" class="btn btn-danger btn-sm"><i class="fa-solid fa-trash fx-1x"></i>Inactive</a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+ 
+
+			</div>
+		</div>
+	</section>
+</body>
+</html>
