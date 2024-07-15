@@ -2,12 +2,14 @@ package com.springboot.Controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.security.Principal;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -26,9 +28,11 @@ import com.springboot.Entity.User;
 import com.springboot.Service.CategroyServiceImp;
 import com.springboot.Service.ProductServiceImp;
 import com.springboot.Service.UserServiceImp;
+import com.springboot.Util.CommonUtil;
 
+import jakarta.mail.MessagingException;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import jakarta.transaction.Transactional;
 
 
 
@@ -87,7 +91,7 @@ public class HomeController {
 		return "viewDetails";
 	}
 	
-	@Transactional
+	
 	@PostMapping("/saveUser")
 	public String saveUser(@ModelAttribute User user,@RequestParam("file")MultipartFile file,  HttpSession session) throws IOException {
 		String fileName = file.isEmpty() ? "default.jpg" : file.getOriginalFilename();
@@ -104,5 +108,36 @@ public class HomeController {
 		return "redirect:/register";
 	}
 	
+	@GetMapping("/forgetPassword")
+	public String forgetPassword() {
+		return "forgetPassword";
+	}
 	
+	@GetMapping("/resetPassword")
+	public String resetPassword() {
+		return "resetPassword";
+	}
+	
+	@PostMapping("/forgetPassword")
+	public String processForgetPassword(@RequestParam String email, HttpSession session, HttpServletRequest request) throws UnsupportedEncodingException, MessagingException {
+		User user = userServiceImp.getUserByEmail(email);
+		if(ObjectUtils.isEmpty(user)) {
+			session.setAttribute("errorMsg", "Invalid email...");
+		}else {
+			String resetToken = UUID.randomUUID().toString();
+			userServiceImp.updateUserRestToken(email,resetToken);
+			
+			CommonUtil commonUtil = new CommonUtil();
+			String url = commonUtil.generateUrl(request)+"/resetPassword?token="+resetToken;
+			boolean sendEmail = commonUtil.sendEmail(email,url);
+			//Generate URL - http://localhost:8080/resetPassword?token=flkjsdfklsdjfsdlkfj
+			
+			if(sendEmail) {
+				session.setAttribute("successMsg", "Reset password link send in your email");
+			}else {
+				session.setAttribute("errorMsg", "Something went wrong...");
+			}
+		}
+		return "redirect:/forgetPassword";
+	}
 }

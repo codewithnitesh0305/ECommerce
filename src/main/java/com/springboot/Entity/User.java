@@ -32,4 +32,5 @@ public class User {
 	private String profileImage;
 	private String role;
 	private boolean isEnable;
+	private String resetToken;
 }
